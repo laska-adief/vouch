@@ -7,6 +7,7 @@ import { useDebounce } from "@/hooks/use-debounce";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import { toast } from "sonner";
+import MovieItem from "./movie-item";
 
 export default function SearchBar({ onSelectMovie }: { onSelectMovie?: (movie: SearchResult) => void }) {
     const [query, setQuery] = useState("");
@@ -87,27 +88,11 @@ export default function SearchBar({ onSelectMovie }: { onSelectMovie?: (movie: S
                             className="w-full justify-start h-auto py-2 text-left font-normal"
                             onClick={() => handleSelectMovie(item)}
                         >
-                            <div className="flex items-center gap-2 w-full">
-                                {item.poster_path ? (
-                                    <Image
-                                        src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                                        alt={item.media_type === 'movie' ? item.title : item.name}
-                                        width={50}
-                                        height={50}
-                                        className="h-12 w-8 object-cover rounded"
-                                    />
-                                ) : (
-                                    <div className="w-8 h-12 bg-muted rounded flex items-center justify-center">
-                                        <span className="text-muted-foreground">?</span>
-                                    </div>
-                                )}
-                                <div className="flex flex-col overflow-hidden">
-                                    <span className="truncate font-medium">{item.media_type === 'movie' ? item.title : item.name}</span>
-                                    <span className="text-xs text-muted-foreground truncate">
-                                        {item.media_type === "movie" ? "Movie" : "TV Series"} • {item.media_type === "movie" ? item.release_date?.split("-")[0] : item.first_air_date?.split("-")[0] || "N/A"}
-                                    </span>
-                                </div>
-                            </div>
+                            <MovieItem item={{
+                                title: item.media_type === 'movie' ? item.title : item.name, release_date: item.media_type === 'movie' ? item.release_date : item.first_air_date,
+                                poster_path: item.poster_path || "",
+                                media_type: item.media_type
+                            }} />
                         </Button>
                     ))}
                 </div>
