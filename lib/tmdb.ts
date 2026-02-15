@@ -1,3 +1,4 @@
+"use server"
 export interface MovieResult {
     id: number;
     media_type: 'movie';
@@ -44,7 +45,7 @@ export interface SearchResponse {
 }
 
 const BASE_URL = "https://api.themoviedb.org/3";
-const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+const API_KEY = process.env.TMDB_API_KEY;
 const OPTIONS = {
     method: "GET",
     headers: {
