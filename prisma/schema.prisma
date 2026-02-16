@@ -13,11 +13,18 @@ datasource db {
   provider = "postgresql"
 }
 
-model Reccomendation {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String
-  rating    String
-  review    String
+model Recommendation {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  tmdbId      String
+  title       String
+  mediaType   String
+  posterPath  String
+  releaseDate String
+  voteAverage Float
+  rating      String
+  review      String
+  userId      String
+  userName    String
 }

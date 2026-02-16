@@ -1,4 +1,3 @@
-import { SearchResult } from "@/lib/tmdb";
 import Image from "next/image";
 
 export default function MovieItem({ item }: {
@@ -27,7 +26,7 @@ export default function MovieItem({ item }: {
             <div className="flex flex-col overflow-hidden">
                 <span className="truncate font-medium">{item.title}</span>
                 <span className="text-xs text-muted-foreground truncate">
-                    {item.media_type === "movie" ? "Movie" : "TV Series"} • {item.release_date?.split("-")[0] || "N/A"}
+                    {item.media_type === "movie" ? "Movie" : "TV"} • {item.release_date?.split("-")[0] || "N/A"}
                 </span>
             </div>
         </div>
