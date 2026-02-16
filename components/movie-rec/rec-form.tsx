@@ -10,6 +10,7 @@ import { Input } from "../ui/input"
 import { Textarea } from "../ui/textarea"
 import { IRecomendationReq } from "@/types/Recommendation"
 import { createRecommendation } from "@/actions/recomendation.action"
+import { toast } from "sonner"
 
 const formSchema = z.object({
     id: z.string(),
@@ -99,6 +100,7 @@ export function RecForm({ onSuccess }: { onSuccess: () => void }) {
         const newRec = await createRecommendation(payload);
         if (newRec) {
             form.reset();
+            toast.success("Recommendation added successfully.");
             onSuccess();
         }
     }
@@ -108,7 +110,7 @@ export function RecForm({ onSuccess }: { onSuccess: () => void }) {
                 {/* Movie Search */}
                 <Field>
                     <FieldLabel>
-                        Movie / TV Show Title
+                        Movie / TV Title
                     </FieldLabel>
                     <SearchBar onSelectMovie={handleSelectMovie} />
                     <SelectedMovieDisplay control={form.control} />

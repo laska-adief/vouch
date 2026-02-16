@@ -68,7 +68,7 @@ export default function SearchBar({ onSelectMovie }: { onSelectMovie?: (movie: S
                     id="search-movie"
                     type="text"
                     value={query}
-                    placeholder="Search for a Movie or TV Show..."
+                    placeholder="Search for a Movie or TV..."
                     className="block w-full pl-10 pr-3 py-2.5 border border-input rounded-lg leading-5 bg-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent sm:text-sm"
                     onChange={(e) => setQuery(e.target.value)}
                 />
