@@ -5,7 +5,6 @@ import { Loader2, Search } from "lucide-react";
 import { searchMulti, SearchResult } from "@/lib/tmdb";
 import { useDebounce } from "@/hooks/use-debounce";
 import { Button } from "../ui/button";
-import Image from "next/image";
 import { toast } from "sonner";
 import MovieItem from "./movie-item";
 
@@ -49,7 +48,7 @@ export default function SearchBar({ onSelectMovie }: { onSelectMovie?: (movie: S
                     });
                 setResults(filteredResults);
                 setSearchedQuery(debouncedQuery);
-            } catch (error) {
+            } catch {
                 toast.error("Something went wrong. Please try again.");
             } finally {
                 setLoading(false);

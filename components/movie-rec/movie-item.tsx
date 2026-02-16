@@ -1,4 +1,3 @@
-import { SearchResult } from "@/lib/tmdb";
 import Image from "next/image";
 
 export default function MovieItem({ item }: {

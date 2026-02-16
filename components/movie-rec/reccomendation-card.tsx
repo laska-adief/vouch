@@ -1,8 +1,8 @@
 "use client"
 
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+import { Card, CardContent, CardHeader } from "../ui/card";
 import Image from "next/image";
-import { Star, MessageCircle, Heart, Bookmark, Eye } from "lucide-react";
+import { Star } from "lucide-react";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
@@ -49,7 +49,7 @@ export const RecommendationCard = ({ movie }: RecommendationCardProps) => {
                     ref={reviewRef}
                     className="border-l-2 pl-4 italic text-muted-foreground text-sm line-clamp-4"
                 >
-                    "{movie.review}"
+                    {movie.review}
                 </blockquote>
 
                 {isTruncated && (
@@ -80,7 +80,7 @@ export const RecommendationCard = ({ movie }: RecommendationCardProps) => {
                             </DialogHeader>
                             <div className="grid gap-4">
                                 <blockquote className="border-l-2 pl-4 italic text-muted-foreground max-h-72 overflow-y-auto pr-2">
-                                    "{movie.review}"
+                                    {movie.review}
                                 </blockquote>
                             </div>
                         </DialogContent>

@@ -1,8 +1,7 @@
-
 import * as z from "zod"
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field"
 import SearchBar from "./search-bar"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch, Control } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SearchResult } from "@/lib/tmdb"
 import { Button } from "../ui/button"
@@ -12,21 +11,51 @@ import { Textarea } from "../ui/textarea"
 import { IRecomendationReq } from "@/types/Recommendation"
 import { createRecommendation } from "@/actions/recomendation.action"
 
-export function RecForm({ onSuccess }: { onSuccess: () => void }) {
-    const formSchema = z.object({
-        id: z.string(),
-        tmdbId: z.string(),
-        title: z.string().min(1, "Title is required."),
-        media_type: z.enum(["movie", "tv"]),
-        poster_path: z.string(),
-        release_date: z.string(),
-        vote_average: z.number(),
-        rating: z.string().refine((val) => !isNaN(Number(val)) && Number(val) >= 1 && Number(val) <= 10, "Rating must be a number between 1 and 10."),
-        review: z.string().min(10, "Review must be at least 10 characters."),
-        userId: z.string(),
-        userName: z.string(),
-    })
+const formSchema = z.object({
+    id: z.string(),
+    tmdbId: z.string(),
+    title: z.string().min(1, "Title is required."),
+    media_type: z.enum(["movie", "tv"]),
+    poster_path: z.string(),
+    release_date: z.string(),
+    vote_average: z.number(),
+    rating: z.string().refine((val) => !isNaN(Number(val)) && Number(val) >= 1 && Number(val) <= 10, "Rating must be a number between 1 and 10."),
+    review: z.string().min(10, "Review must be at least 10 characters."),
+    userId: z.string(),
+    userName: z.string(),
+})
 
+const SelectedMovieDisplay = ({ control }: { control: Control<z.infer<typeof formSchema>> }) => {
+    const title = useWatch({
+        control,
+        name: "title",
+    });
+    const mediaType = useWatch({
+        control,
+        name: "media_type",
+    });
+    const releaseDate = useWatch({
+        control,
+        name: "release_date",
+    });
+    const posterPath = useWatch({
+        control,
+        name: "poster_path",
+    });
+
+    if (!title) return null;
+
+    return (
+        <MovieItem item={{
+            title: title,
+            media_type: mediaType,
+            release_date: releaseDate,
+            poster_path: posterPath,
+        }} />
+    );
+};
+
+export function RecForm({ onSuccess }: { onSuccess: () => void }) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -46,11 +75,11 @@ export function RecForm({ onSuccess }: { onSuccess: () => void }) {
 
     const handleSelectMovie = (movie: SearchResult) => {
         form.setValue("tmdbId", movie.id.toString());
-        form.setValue("title", movie.media_type === 'movie' ? movie.title : movie.name);
-        form.setValue("media_type", movie.media_type);
-        form.setValue("poster_path", movie.poster_path || "");
-        form.setValue("release_date", movie.media_type === 'movie' ? movie.release_date : movie.first_air_date || "");
-        form.setValue("vote_average", movie.vote_average);
+        form.setValue("title", movie.media_type === 'movie' ? movie.title : movie.name, { shouldValidate: true });
+        form.setValue("media_type", movie.media_type, { shouldValidate: true });
+        form.setValue("poster_path", movie.poster_path || "", { shouldValidate: true });
+        form.setValue("release_date", movie.media_type === 'movie' ? movie.release_date : movie.first_air_date || "", { shouldValidate: true });
+        form.setValue("vote_average", movie.vote_average, { shouldValidate: true });
     }
 
     const handleOnSubmit = async (data: z.infer<typeof formSchema>) => {
@@ -82,22 +111,14 @@ export function RecForm({ onSuccess }: { onSuccess: () => void }) {
                         Movie / TV Show Title
                     </FieldLabel>
                     <SearchBar onSelectMovie={handleSelectMovie} />
-                    {
-                        form.watch("title") &&
-                        <MovieItem item={{
-                            title: form.watch("title"),
-                            media_type: form.watch("media_type"),
-                            release_date: form.watch("release_date"),
-                            poster_path: form.watch("poster_path"),
-                        }} />
-                    }
+                    <SelectedMovieDisplay control={form.control} />
                     {
                         form.formState.errors.title && <FieldError errors={[form.formState.errors.title]} />
                     }
                 </Field>
 
                 {/* Rating */}
-                <Field >
+                <Field className="flex flex-col gap-2">
                     <FieldLabel>
                         Rating
                     </FieldLabel>
@@ -111,12 +132,15 @@ export function RecForm({ onSuccess }: { onSuccess: () => void }) {
                         {...form.register("rating")}
                     />
                     {
+                        <p className="text-xs text-zinc-500">Enter a rating between 1 and 10.</p>
+                    }
+                    {
                         form.formState.errors.rating && <FieldError errors={[form.formState.errors.rating]} />
                     }
                 </Field>
 
                 {/* Review */}
-                <Field >
+                <Field className="flex flex-col gap-2">
                     <FieldLabel>
                         Review
                     </FieldLabel>
@@ -125,8 +149,11 @@ export function RecForm({ onSuccess }: { onSuccess: () => void }) {
                         aria-invalid={form.formState.errors.review ? true : false}
                         {...form.register("review")}
                         placeholder="Why you recommend this movie?"
-                        className="min-h-[80px] resize-none"
+                        className="min-h-[80px] max-h-[80px] resize-none"
                     />
+                    {
+                        <p className="text-xs text-zinc-500">Enter a review of at least 10 characters.</p>
+                    }
                     {
                         form.formState.errors.review && <FieldError errors={[form.formState.errors.review]} />
                     }
