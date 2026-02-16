@@ -9,40 +9,69 @@ import { Button } from "../ui/button"
 import MovieItem from "./movie-item"
 import { Input } from "../ui/input"
 import { Textarea } from "../ui/textarea"
+import { IRecomendationReq } from "@/types/Recommendation"
+import { createRecommendation } from "@/actions/recomendation.action"
 
 export function RecForm({ onSuccess }: { onSuccess: () => void }) {
     const formSchema = z.object({
         id: z.string(),
+        tmdbId: z.string(),
         title: z.string().min(1, "Title is required."),
-        media_type: z.enum(["movie", "tv"], "Please select a type."),
+        media_type: z.enum(["movie", "tv"]),
         poster_path: z.string(),
         release_date: z.string(),
+        vote_average: z.number(),
         rating: z.string().refine((val) => !isNaN(Number(val)) && Number(val) >= 1 && Number(val) <= 10, "Rating must be a number between 1 and 10."),
         review: z.string().min(10, "Review must be at least 10 characters."),
+        userId: z.string(),
+        userName: z.string(),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             id: "",
+            tmdbId: "",
             title: "",
             media_type: "movie",
+            poster_path: "",
+            release_date: "",
+            vote_average: 0,
             rating: "",
             review: "",
+            userId: "",
+            userName: "",
         }
     });
 
     const handleSelectMovie = (movie: SearchResult) => {
-        form.setValue("id", movie.id.toString());
+        form.setValue("tmdbId", movie.id.toString());
         form.setValue("title", movie.media_type === 'movie' ? movie.title : movie.name);
         form.setValue("media_type", movie.media_type);
         form.setValue("poster_path", movie.poster_path || "");
         form.setValue("release_date", movie.media_type === 'movie' ? movie.release_date : movie.first_air_date || "");
+        form.setValue("vote_average", movie.vote_average);
     }
 
-    const handleOnSubmit = (data: z.infer<typeof formSchema>) => {
-        console.log("submitted data", data);
-        onSuccess();
+    const handleOnSubmit = async (data: z.infer<typeof formSchema>) => {
+        const payload: IRecomendationReq = {
+            tmdbId: data.tmdbId,
+            title: data.title,
+            mediaType: data.media_type,
+            posterPath: data.poster_path,
+            releaseDate: data.release_date,
+            voteAverage: data.vote_average,
+            rating: data.rating,
+            review: data.review,
+            userId: data.userId || "",
+            userName: data.userName || "",
+        }
+
+        const newRec = await createRecommendation(payload);
+        if (newRec) {
+            form.reset();
+            onSuccess();
+        }
     }
     return (
         <form onSubmit={form.handleSubmit(handleOnSubmit)}>
