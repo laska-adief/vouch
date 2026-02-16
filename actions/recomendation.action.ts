@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { IRecomendationReq, IRecomendationRes } from "@/types/Recommendation";
 import { revalidatePath } from "next/cache";
 
-export async function createRecommendation(payload: IRecomendationReq) {
+export async function createRecommendation(payload: IRecomendationReq): Promise<IRecomendationRes | null> {
     try {
         const newRec = await prisma.recommendation.create({
             data: {
@@ -21,10 +21,10 @@ export async function createRecommendation(payload: IRecomendationReq) {
             },
         });
         revalidatePath("/");
-        return newRec;
+        return newRec as IRecomendationRes;
     } catch (error) {
         console.log("Error creating recommendation", error);
-        throw error;
+        return null;
     }
 }
 
@@ -34,6 +34,6 @@ export async function getRecommendations(): Promise<IRecomendationRes[]> {
         return recommendations as IRecomendationRes[];
     } catch (error) {
         console.log("Error getting recommendations", error);
-        throw error;
+        return [];
     }
 }

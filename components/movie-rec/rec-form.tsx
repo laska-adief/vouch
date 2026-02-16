@@ -97,11 +97,17 @@ export function RecForm({ onSuccess }: { onSuccess: () => void }) {
             userName: data.userName || "",
         }
 
-        const newRec = await createRecommendation(payload);
-        if (newRec) {
-            form.reset();
-            toast.success("Recommendation added successfully.");
-            onSuccess();
+        try {
+            const newRec = await createRecommendation(payload);
+            if (newRec) {
+                form.reset();
+                toast.success("Recommendation added successfully.");
+                onSuccess();
+            } else {
+                toast.error("Failed to add recommendation. Please try again.");
+            }
+        } catch (error) {
+            toast.error("An unexpected error occurred.");
         }
     }
     return (
