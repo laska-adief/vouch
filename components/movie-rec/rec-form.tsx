@@ -22,8 +22,6 @@ const formSchema = z.object({
     vote_average: z.number(),
     rating: z.string().refine((val) => !isNaN(Number(val)) && Number(val) >= 1 && Number(val) <= 10, "Rating must be a number between 1 and 10."),
     review: z.string().min(10, "Review must be at least 10 characters."),
-    userId: z.string(),
-    userName: z.string(),
 })
 
 const SelectedMovieDisplay = ({ control }: { control: Control<z.infer<typeof formSchema>> }) => {
@@ -69,8 +67,6 @@ export function RecForm({ onSuccess }: { onSuccess: () => void }) {
             vote_average: 0,
             rating: "",
             review: "",
-            userId: "",
-            userName: "",
         }
     });
 
@@ -93,8 +89,10 @@ export function RecForm({ onSuccess }: { onSuccess: () => void }) {
             voteAverage: data.vote_average,
             rating: data.rating,
             review: data.review,
-            userId: data.userId || "",
-            userName: data.userName || "",
+            userId: "",
+            userName: "",
+            userEmail: "",
+            userImage: "",
         }
 
         try {

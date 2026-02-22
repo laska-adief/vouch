@@ -16,7 +16,6 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { RecommendationCardProps } from "@/types/Recommendation";
 
-
 export const RecommendationCard = ({ movie }: RecommendationCardProps) => {
     const reviewRef = useRef<HTMLQuoteElement>(null);
     const [isTruncated, setIsTruncated] = useState(false);
@@ -32,8 +31,8 @@ export const RecommendationCard = ({ movie }: RecommendationCardProps) => {
         <Card className="w-full h-full flex flex-col hover:shadow-lg transition-shadow duration-300">
             <CardHeader className="flex flex-row items-center gap-4 p-4">
                 <Avatar>
-                    <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${movie.userName}`} />
-                    <AvatarFallback>{movie.userName[0]}</AvatarFallback>
+                    <AvatarImage src={movie.userImage} />
+                    <AvatarFallback>{movie.userName?.slice(0, 1).toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
                     <p className="text-sm font-medium leading-none">{movie.userName}</p>
@@ -64,8 +63,8 @@ export const RecommendationCard = ({ movie }: RecommendationCardProps) => {
                                 <div className="flex items-center justify-between pr-4">
                                     <div className="flex items-center gap-4 mb-4">
                                         <Avatar>
-                                            <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${movie.userName}`} />
-                                            <AvatarFallback>{movie.userName[0]}</AvatarFallback>
+                                            <AvatarImage src={movie.userImage} />
+                                            <AvatarFallback>{movie.userName?.slice(0, 1).toUpperCase()}</AvatarFallback>
                                         </Avatar>
                                         <div className="flex flex-col text-left">
                                             <DialogTitle>{movie.userName}</DialogTitle>

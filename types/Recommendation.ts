@@ -9,6 +9,8 @@ export interface IRecomendationReq {
     review: string;
     userId: string;
     userName: string;
+    userEmail: string;
+    userImage: string;
 }
 
 export interface IRecomendationRes extends MovieRecommendation {
@@ -28,6 +30,8 @@ export interface MovieRecommendation {
     rating: string;
     userId: string;
     userName: string;
+    userEmail: string;
+    userImage: string;
 }
 
 export interface RecommendationCardProps {
