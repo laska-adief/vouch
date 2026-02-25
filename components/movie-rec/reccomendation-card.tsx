@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { useEffect, useRef, useState } from "react";
 import { RecommendationCardProps } from "@/types/Recommendation";
+import Link from "next/link";
 
 export const RecommendationCard = ({ movie }: RecommendationCardProps) => {
     const reviewRef = useRef<HTMLQuoteElement>(null);
@@ -86,7 +87,7 @@ export const RecommendationCard = ({ movie }: RecommendationCardProps) => {
                     </Dialog>
                 )}
 
-                <div className="flex gap-3 bg-muted/50 p-3 rounded-lg mt-auto">
+                <Link href={`${movie.mediaType === "movie" ? "/movie" : "/tv"}/${movie.tmdbId}`} className="flex gap-3 bg-muted/50 p-3 rounded-lg mt-auto">
                     <div className="relative aspect-2/3 w-16 shrink-0 rounded overflow-hidden">
                         {movie.posterPath ? (
                             <Image
@@ -112,7 +113,7 @@ export const RecommendationCard = ({ movie }: RecommendationCardProps) => {
                             <span>{movie.voteAverage.toFixed(1)}</span>
                         </div>
                     </div>
-                </div>
+                </Link>
             </CardContent>
         </Card>
     );
