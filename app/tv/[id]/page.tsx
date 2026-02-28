@@ -10,9 +10,9 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { id } = await params;
     const detail = await getTVDetails(id).catch(() => null);
-    if (!detail) return { title: "TV Show Not Found | Vouch" };
+    if (!detail) return { title: "TV Show Not Found" };
     return {
-        title: `${detail.name} (${new Date(detail.first_air_date).getFullYear()}) | Vouch`,
+        title: `${detail.name} (${new Date(detail.first_air_date).getFullYear()})`,
         description: detail.overview,
     };
 }

@@ -15,8 +15,50 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Vouch",
+  title: {
+    default: "Vouch | Movie and TV Show Recommendations",
+    template: "%s | Vouch",
+  },
+  applicationName: "Vouch",
   description: "Movie and TV Show Recommendations",
+  icons: {
+    icon: "/logo.svg",
+  },
+  openGraph: {
+    title: "Vouch",
+    description: "Movie and TV Show Recommendations",
+    type: "website",
+    siteName: "Vouch",
+    images: [
+      {
+        url: "/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Vouch - Movie and TV Show Recommendations",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Vouch",
+    description: "Movie and TV Show Recommendations",
+    images: ["/logo.png"],
+  },
+  keywords: ["Vouch", "Movie", "TV Show", "Movies", "TV Shows", "Recommendations"],
+  authors: [{ name: "Laska Adief" }],
+  creator: "Laska Adief",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+
 };
 
 import { Navbar } from "@/components/navbar";
