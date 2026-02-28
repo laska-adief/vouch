@@ -7,7 +7,6 @@ export const AuthAvatar = ({ image, name }: { image: string, name: string }) => 
                 <AvatarImage src={image} />
                 <AvatarFallback>{name.slice(0, 1).toUpperCase()}</AvatarFallback>
             </Avatar>
-            <p className="font-medium">{name}</p>
         </>
     )
 }
