@@ -5,7 +5,7 @@ import { auth } from "@/auth";
 export default async function Home() {
   const session = await auth();
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container mx-auto py-8 px-4 md:px-6">
       {
         session && (
           <div className="flex justify-end">
