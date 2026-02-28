@@ -4,6 +4,8 @@ import { auth } from "@/auth";
 import { LogoutButton } from "./auth/logout-button";
 import { AuthAvatar } from "./auth/auth-avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import Image from "next/image";
+import Logo from "@/public/logo.svg"
 
 export const Navbar = async () => {
     const session = await auth();
@@ -11,7 +13,8 @@ export const Navbar = async () => {
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 h-14">
             <div className="container h-full grid grid-cols-3 items-center justify-between px-4 md:px-6 mx-auto">
                 <div className="col-span-1"></div>
-                <Link href="/" className="col-span-1 flex justify-center">
+                <Link href="/" className="flex justify-center items-center gap-2">
+                    <Image src={Logo} alt="Logo" width={32} height={32} />
                     <span className="font-bold text-xl tracking-tighter">VOUCH</span>
                 </Link>
 

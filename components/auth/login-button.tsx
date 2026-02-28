@@ -5,12 +5,13 @@ import Image from "next/image"
 
 export function LoginButton() {
     return (
-        <Button variant="outline" onClick={async () => {
+        <Button variant="outline" className="px-2 md:px-4" onClick={async () => {
             "use server"
             await signIn("google")
         }
         }>
             <Image src={GoogleIcon} alt="Google" width={20} height={20} />
-            Login</Button>
+            <p>Login</p>
+        </Button>
     )
 }
