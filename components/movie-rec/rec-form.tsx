@@ -134,7 +134,7 @@ export function RecForm({ onSuccess }: { onSuccess: () => void }) {
                         type="number"
                         min={1}
                         max={10}
-                        step={0.5}
+                        step={0.1}
                         {...form.register("rating")}
                     />
                     {
