@@ -33,12 +33,19 @@ export const Navbar = async () => {
                                     <AuthAvatar image={session.user?.image || ""} name={session.user?.name || ""} />
                                 </div>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-40 mt-2" align="end">
+                            <DropdownMenuContent className="w-48 mt-2" align="end">
                                 <DropdownMenuGroup className="flex items-center justify-start gap-2 p-1">
                                     <AuthAvatar image={session.user?.image || ""} name={session.user?.name || ""} />
                                     <p className="font-medium">{session.user?.name || ""}</p>
                                 </DropdownMenuGroup>
                                 <DropdownMenuSeparator />
+                                <DropdownMenuGroup className="p-1">
+                                    <Link href="/my-recommendation">
+                                        <DropdownMenuItem className="cursor-pointer">
+                                            My Recommendations
+                                        </DropdownMenuItem>
+                                    </Link>
+                                </DropdownMenuGroup>
                                 <DropdownMenuGroup className="p-1">
                                     <LogoutButton className="w-full" />
                                 </DropdownMenuGroup>

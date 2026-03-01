@@ -36,4 +36,5 @@ export interface MovieRecommendation {
 
 export interface RecommendationCardProps {
     movie: MovieRecommendation;
+    isEditable?: boolean;
 }
