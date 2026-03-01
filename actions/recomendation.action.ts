@@ -42,3 +42,17 @@ export async function getRecommendations(): Promise<IRecomendationRes[]> {
         return [];
     }
 }
+
+export async function getRecommendationsByUser(userId: string): Promise<IRecomendationRes[]> {
+    try {
+        const recommendations = await prisma.recommendation.findMany({
+            where: {
+                userId,
+            },
+        })
+        return recommendations as IRecomendationRes[];
+    } catch (error) {
+        console.log("Error getting recommendations", error);
+        return [];
+    }
+}
