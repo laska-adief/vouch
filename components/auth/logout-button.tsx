@@ -5,7 +5,7 @@ export function LogoutButton({ ...props }) {
     return (
         <Button variant="outline" {...props} onClick={async () => {
             "use server"
-            await signOut()
+            await signOut({ redirectTo: "/" })
         }
         }>
             Logout
