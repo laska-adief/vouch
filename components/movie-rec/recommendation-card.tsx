@@ -25,11 +25,13 @@ import {
     DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { EditRecDialog } from "./edit-rec-dialog";
+import { DeleteRecDialog } from "./delete-rec-dialog";
 
 export const RecommendationCard = ({ movie, isEditable }: RecommendationCardProps) => {
     const reviewRef = useRef<HTMLQuoteElement>(null);
     const [isTruncated, setIsTruncated] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
     useEffect(() => {
         if (reviewRef.current) {
@@ -51,7 +53,9 @@ export const RecommendationCard = ({ movie, isEditable }: RecommendationCardProp
                 }}>
                     Edit
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => { }}>
+                <DropdownMenuItem onClick={() => {
+                    setIsDeleteDialogOpen(true);
+                }}>
                     Delete
                 </DropdownMenuItem>
             </DropdownMenuContent>
@@ -64,6 +68,7 @@ export const RecommendationCard = ({ movie, isEditable }: RecommendationCardProp
                 <div className="flex justify-end">
                     {isEditable && menuEditable()}
                     {isEditable && <EditRecDialog movie={movie} open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} />}
+                    {isEditable && <DeleteRecDialog movie={movie} open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen} />}
                 </div>
                 <div className="flex flex-row items-center gap-4">
                     <Avatar>

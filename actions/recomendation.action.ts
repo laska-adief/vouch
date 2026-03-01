@@ -64,7 +64,20 @@ export async function updateRecommendation(payload: IRecomendationReq): Promise<
     }
 }
 
-
+export async function deleteRecommendation(id: string): Promise<IRecomendationRes | null> {
+    try {
+        const deletedRec = await prisma.recommendation.delete({
+            where: {
+                id,
+            },
+        });
+        revalidatePath("/my-recommendation");
+        return deletedRec as IRecomendationRes;
+    } catch (error) {
+        console.log("Error deleting recommendation", error);
+        return null;
+    }
+}
 
 export async function getRecommendations(): Promise<IRecomendationRes[]> {
     try {
