@@ -24,10 +24,12 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { EditRecDialog } from "./edit-rec-dialog";
 
 export const RecommendationCard = ({ movie, isEditable }: RecommendationCardProps) => {
     const reviewRef = useRef<HTMLQuoteElement>(null);
     const [isTruncated, setIsTruncated] = useState(false);
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
     useEffect(() => {
         if (reviewRef.current) {
@@ -44,7 +46,9 @@ export const RecommendationCard = ({ movie, isEditable }: RecommendationCardProp
             <DropdownMenuContent>
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => { }}>
+                <DropdownMenuItem onClick={() => {
+                    setIsEditDialogOpen(true);
+                }}>
                     Edit
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => { }}>
@@ -59,6 +63,7 @@ export const RecommendationCard = ({ movie, isEditable }: RecommendationCardProp
             <CardHeader className="p-4 pt-0">
                 <div className="flex justify-end">
                     {isEditable && menuEditable()}
+                    {isEditable && <EditRecDialog movie={movie} open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} />}
                 </div>
                 <div className="flex flex-row items-center gap-4">
                     <Avatar>
