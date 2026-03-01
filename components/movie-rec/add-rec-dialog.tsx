@@ -23,7 +23,7 @@ export function AddRecDialog() {
                         {`Share your favorite movie or tv show with the world. Click submit when you're done.`}
                     </DialogDescription>
                 </DialogHeader>
-                <RecForm onSuccess={() => setOpen(false)} />
+                <RecForm action="create" onSuccess={() => setOpen(false)} />
             </DialogContent>
         </Dialog>
     )
