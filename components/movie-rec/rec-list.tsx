@@ -7,12 +7,12 @@ export const RecList = async () => {
         <div className="w-full">
             <h2 className="text-2xl font-bold mb-6">Top Recommendations</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {recommendations.length > 0 && recommendations.map((movie) => (
+                {recommendations && recommendations.length > 0 && recommendations.map((movie) => (
                     <RecommendationCard key={movie.id} movie={movie} />
                 ))}
 
             </div>
-            {recommendations.length === 0 && (
+            {recommendations && recommendations.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
                     <div className="p-4 rounded-full bg-muted mb-4">
                         <svg
