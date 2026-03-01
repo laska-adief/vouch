@@ -1,5 +1,5 @@
 import { getRecommendations } from "@/actions/recomendation.action";
-import { RecommendationCard } from "./reccomendation-card";
+import { RecommendationCard } from "./recommendation-card";
 
 export const RecList = async () => {
     const recommendations = await getRecommendations();

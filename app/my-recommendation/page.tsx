@@ -1,4 +1,4 @@
-import { RecommendationCard } from "@/components/movie-rec/reccomendation-card";
+import { RecommendationCard } from "@/components/movie-rec/recommendation-card";
 import { getRecommendationsByUser } from "@/actions/recomendation.action";
 import { auth } from "@/auth";
 
