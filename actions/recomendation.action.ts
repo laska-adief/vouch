@@ -33,9 +33,46 @@ export async function createRecommendation(payload: IRecomendationReq): Promise<
     }
 }
 
+export async function updateRecommendation(payload: IRecomendationReq): Promise<IRecomendationRes | null> {
+    try {
+        const session = await auth();
+
+        const newRec = await prisma.recommendation.update({
+            where: {
+                id: payload.id,
+            },
+            data: {
+                tmdbId: payload.tmdbId,
+                title: payload.title,
+                mediaType: payload.mediaType,
+                posterPath: payload.posterPath,
+                releaseDate: payload.releaseDate,
+                voteAverage: payload.voteAverage,
+                rating: payload.rating,
+                review: payload.review,
+                userId: session?.user?.id || "0",
+                userName: session?.user?.name || "0",
+                userEmail: session?.user?.email || "0",
+                userImage: session?.user?.image || "0",
+            },
+        });
+        revalidatePath("/my-recommendation");
+        return newRec as IRecomendationRes;
+    } catch (error) {
+        console.log("Error creating recommendation", error);
+        return null;
+    }
+}
+
+
+
 export async function getRecommendations(): Promise<IRecomendationRes[]> {
     try {
-        const recommendations = await prisma.recommendation.findMany()
+        const recommendations = await prisma.recommendation.findMany({
+            orderBy: {
+                createdAt: "desc",
+            },
+        })
         return recommendations as IRecomendationRes[];
     } catch (error) {
         console.log("Error getting recommendations", error);
@@ -46,6 +83,9 @@ export async function getRecommendations(): Promise<IRecomendationRes[]> {
 export async function getRecommendationsByUser(userId: string): Promise<IRecomendationRes[]> {
     try {
         const recommendations = await prisma.recommendation.findMany({
+            orderBy: {
+                createdAt: "desc",
+            },
             where: {
                 userId,
             },

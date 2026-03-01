@@ -1,4 +1,5 @@
 export interface IRecomendationReq {
+    id?: string;
     tmdbId: string;
     title: string;
     mediaType: string;
@@ -35,6 +36,6 @@ export interface MovieRecommendation {
 }
 
 export interface RecommendationCardProps {
-    movie: MovieRecommendation;
+    movie: IRecomendationRes;
     isEditable?: boolean;
 }
