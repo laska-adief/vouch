@@ -32,6 +32,9 @@ WORKDIR /app
 
 RUN apk add --no-cache libc6-compat openssl
 
+# Install Prisma CLI to run migrations
+RUN npm install prisma dotenv
+
 ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
@@ -46,6 +49,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=vouch:portfolio /app/.next/standalone ./
 COPY --from=builder --chown=vouch:portfolio /app/.next/static ./.next/static
 COPY --from=builder --chown=vouch:portfolio /app/prisma ./prisma
+COPY --from=builder --chown=vouch:portfolio /app/prisma.config.ts ./
 
 USER vouch
 
@@ -57,4 +61,4 @@ ENV HOSTNAME "0.0.0.0"
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-CMD ["node", "server.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node server.js"]
