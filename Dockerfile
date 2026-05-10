@@ -39,8 +39,6 @@ COPY --from=builder --chown=vouch:portfolio /app/.next/static ./.next/static
 
 # 2. Copy Prisma files for production migrations
 COPY --from=builder --chown=vouch:portfolio /app/prisma ./prisma
-COPY --from=builder --chown=vouch:portfolio /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder --chown=vouch:portfolio /app/node_modules/@prisma ./node_modules/@prisma
 
 USER vouch
 
