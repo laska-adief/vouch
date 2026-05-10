@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: vouch-db
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vouch_admin -d vouch_production"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shared-gateway
+    volumes:
+      - vouch_postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: vouch-app
+    restart: always
+    # This waits for the DB to be healthy before trying to run migrations
+    depends_on:
+      vouch-db:
+        condition: service_healthy
+    env_file:
+      - .env
+    networks:
+      - shared-gateway
+    
+networks:
+  shared-gateway:
+    external: true
+
+volumes:
+  vouch_postgres_data:
