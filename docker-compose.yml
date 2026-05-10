@@ -23,7 +23,7 @@ services:
     restart: always
     # This waits for the DB to be healthy before trying to run migrations
     depends_on:
-      vouch-db:
+      db:
         condition: service_healthy
     env_file:
       - .env
