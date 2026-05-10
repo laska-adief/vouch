@@ -1,5 +1,5 @@
 # --- STAGE 1: Dependencies ---
-FROM node:20-alpine AS deps
+FROM node:22-alpine AS deps
 WORKDIR /app
 
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
@@ -12,7 +12,7 @@ COPY prisma ./prisma/
 RUN npm ci
 
 # --- STAGE 2: Builder ---
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -22,10 +22,13 @@ RUN npx prisma generate
 RUN npm run build
 
 # --- STAGE 3: Runner ---
-FROM node:20-alpine AS runner
+FROM node:22-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
+
+# Only install the necessary system library for Prisma
+RUN apk add --no-cache openssl
 
 # Create your custom group and user
 RUN addgroup --system --gid 1001 portfolio
@@ -39,6 +42,7 @@ COPY --from=builder --chown=vouch:portfolio /app/.next/static ./.next/static
 
 # 2. Copy Prisma files for production migrations
 COPY --from=builder --chown=vouch:portfolio /app/prisma ./prisma
+COPY --from=builder --chown=vouch:portfolio /app/prisma.config.mjs ./
 
 USER vouch
 
